@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  direction: rtl;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* background-color: red; */
+}
+
+:root {
+  --primary-color: #2395F8;
+  --secondary-color: #515151;
+  --on-primary: white;
+}
