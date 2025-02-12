@@ -9,7 +9,8 @@ import HeaderIntro from "../../../assets/Header.png";
 import registerimg from "../../../assets/registerimg.png"
 import './Register.css'
 import logo from "../../../../src/assets/Vector.png";
-
+import { useNavigate } from "react-router-dom"; 
+import AuthFooter from '../../shared/AuthFooter'
 
 const CheckboxLabel = styled.label`
   color : var(--primary-color);
@@ -34,7 +35,8 @@ const Register = () => {
   });
 
   const [message, setMessage] = useState("");
-
+  // const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -63,6 +65,7 @@ const Register = () => {
 
         const res = await axios.post("http://localhost:5000/api/users/register", formData);
         setMessage(res.data.message || "Registration successful");
+        navigate("/login");
       }
     } catch (error) {
       setMessage(error.response?.data?.error || "Registration failed");
@@ -74,7 +77,7 @@ const Register = () => {
     <Container className="register-container">
       <div id="intro-header-container" >
         <img src={HeaderIntro} alt="" id="intro-header" />
-        <div className="flex-item"><FaAngleRight className='icon' /></div>
+        <div className="flex-item"><FaAngleRight className='icon' onClick={() => navigate(-1)}/></div>
         <div className="flex-item"><h2 className="abda">ابدا مع  ONurse</h2></div>
         <div className="flex-item"></div> 
       </div>
@@ -100,6 +103,8 @@ const Register = () => {
         <br />
         <Button type="submit">انشاء حساب </Button>
       </form>
+      <AuthFooter text="هل لديك حساب بالفعل؟" linkText="تسجيل الدخول" to="/login" />
+
       </div>
     </Container>
     <img src={registerimg} alt= "" className="registerimg"/>

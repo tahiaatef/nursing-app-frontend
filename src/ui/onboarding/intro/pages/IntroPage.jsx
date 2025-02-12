@@ -1,4 +1,4 @@
-
+import { useNavigate } from "react-router-dom";
 import './styleintro.css'
 import HeaderIntro from "../../../../assets/Header.png";
 import QuoteUp from "../../../../assets/quote-up.png";
@@ -11,11 +11,12 @@ const SpacedButton = styled(Button)`
   margin-top: 20px;
 `;
 const IntroPage = () => {
+  const navigate = useNavigate();
   return (
     <>
     <div id="intro-header-container" >
       <img src={HeaderIntro} alt="" id="intro-header" />
-      <div className="flex-item"><FaAngleRight className='icon' /></div>
+      <div className="flex-item"><FaAngleRight className='icon' onClick={() => navigate(-1)}/></div>
       <div className="flex-item"><h2>ابدا مع  ONurse</h2></div>
       <div className="flex-item"></div> 
     </div>
@@ -46,7 +47,7 @@ const IntroPage = () => {
         </ol>
       </div>
       <p className='p-intro'>منصة ذهين تعتبر شريكًا مثاليًا لتحقيق التفوق الأكاديمي في التعليم الصحي ودعم بناء مستقبل مهني متميز.</p>
-      <SpacedButton>انضمام</SpacedButton>
+      <SpacedButton onClick={() => navigate("/login")}>انضمام</SpacedButton>
       </div>
     </>
   );
