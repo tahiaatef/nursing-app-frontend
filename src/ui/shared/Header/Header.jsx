@@ -18,7 +18,9 @@ const Header = () => {
             <NavLink to="/about"style={({ isActive }) => ({textDecoration: "none",color: isActive ? "#2395F8" : "#000",  })}>من نحن</NavLink>
             <NavLink to="/askus"style={({ isActive }) => ({textDecoration: "none",color: isActive ? "#2395F8" : "#000",  })}> تواصل معنا</NavLink>
             <NavLink to="/serivcepage"style={({ isActive }) => ({textDecoration: "none",color: isActive ? "#2395F8" : "#000",  })}>الخدمات</NavLink>
+            
             <NavLink to="/FQAPAGE"style={({ isActive }) => ({textDecoration: "none",color: isActive ? "#2395F8" : "#000",  })}>الاسئله الشائعه </NavLink>
+          
           </NavLinks>
           <NavLinks>
             <CiSearch />

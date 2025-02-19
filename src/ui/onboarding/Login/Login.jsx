@@ -26,36 +26,79 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setMessage(""); // مسح أي رسالة سابقة
+
+  //   // التحقق من صحة البريد الإلكتروني
+  //   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  //     return setMessage("Invalid Email");
+  //   }
+
+  //   try {
+  //     const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
+  //     setMessage(res.data.message || "Login successful");
+  //     localStorage.setItem("token", res.data.token);
+  //     localStorage.setItem("user_id", res.data.user_id); // مثال على تخزين الـ user_id
+  //     localStorage.setItem("nurse_id", res.data.nurse_id); // مثال على تخزين الـ nurse_id
+  //     const decoded = jwtDecode(res.data.token);
+  //     console.log("Token Data:", decoded);
+  //     // const isNurse = decoded.isNurse; // 👈 جلب isNurse
+  //     const isNurse = decoded.is_nurse; // ✅ استخدمي نفس الاسم اللي في الـ Backend
+
+  //     // التوجيه بناءً على isNurse
+  //     if (isNurse) {
+  //       navigate("/nurse-dashboard"); // 👈 لو ممرض
+  //     } else {
+  //       navigate("/client-dashboard"); // 👈 لو عميل
+  //     }
+
+  //   } catch (error) {
+  //     setMessage(error.response?.data?.error || "Login failed");
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(""); // مسح أي رسالة سابقة
-
+  
     // التحقق من صحة البريد الإلكتروني
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return setMessage("Invalid Email");
     }
-
+  
     try {
       const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
+      
       setMessage(res.data.message || "Login successful");
-      localStorage.setItem("token", res.data.token);
-
-      // استخراج بيانات المستخدم من التوكن
-      const decoded = jwtDecode(res.data.token);
-      const isNurse = decoded.isNurse; // 👈 جلب isNurse
-
-      // التوجيه بناءً على isNurse
-      if (isNurse) {
-        navigate("/nurse-dashboard"); // 👈 لو ممرض
-      } else {
-        navigate("/client-dashboard"); // 👈 لو عميل
+      
+      const token = res.data.token;
+      if (!token) {
+        throw new Error("Token not received");
       }
-
+      
+      localStorage.setItem("token", token);
+      
+      // استخراج البيانات باستخدام jwtDecode
+      const decoded = jwtDecode(token);
+      console.log("Token Data:", decoded);
+  
+      // استخدام `?.` لتجنب تخزين `undefined`
+      localStorage.setItem("user_id", decoded?.id || "");
+      localStorage.setItem("nurse_id", decoded?.is_nurse ? decoded.id : ""); 
+  
+      // التوجيه بناءً على دور المستخدم
+      if (decoded?.is_nurse) {
+        navigate("/nurse-dashboard");
+      } else {
+        navigate("/SharedLayout");
+      }
+  
     } catch (error) {
+      console.error("❌ خطأ أثناء تسجيل الدخول:", error);
       setMessage(error.response?.data?.error || "Login failed");
     }
   };
-
+  
   return (
     <div className="pagelogin-container">
       <Container className="register-container">
