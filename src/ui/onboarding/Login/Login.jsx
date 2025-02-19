@@ -9,9 +9,10 @@ import Container from '../../shared/Container';
 import { FaAngleRight } from "react-icons/fa";
 import HeaderIntro from "../../../assets/Header.png";
 import loginimg from "../../../assets/loginimg.png";
-import logo from "../../../../src/assets/Vector.png"
+import logo from "../../../../src/assets/Vector.png";
 import { useNavigate } from "react-router-dom";
-import AuthFooter from '../../shared/AuthFooter'
+import AuthFooter from '../../shared/AuthFooter';
+import { jwtDecode } from "jwt-decode";
 
 const Message = styled.p`
   color: red;
@@ -38,7 +39,18 @@ const Login = () => {
       const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
       setMessage(res.data.message || "Login successful");
       localStorage.setItem("token", res.data.token);
-      // navigate("/dashboard");
+
+      // استخراج بيانات المستخدم من التوكن
+      const decoded = jwtDecode(res.data.token);
+      const isNurse = decoded.isNurse; // 👈 جلب isNurse
+
+      // التوجيه بناءً على isNurse
+      if (isNurse) {
+        navigate("/nurse-dashboard"); // 👈 لو ممرض
+      } else {
+        navigate("/client-dashboard"); // 👈 لو عميل
+      }
+
     } catch (error) {
       setMessage(error.response?.data?.error || "Login failed");
     }
@@ -49,8 +61,12 @@ const Login = () => {
       <Container className="register-container">
         <div id="intro-header-container">
           <img src={HeaderIntro} alt="" id="intro-header" />
-          <div className="flex-item"><FaAngleRight className='icon' onClick={() => navigate(-1)} /></div>
-          <div className="flexitemh3"><h3 className='salayty'>سجل الدخول و احصل علي كل الصلاحيات</h3></div>
+          <div className="flex-item">
+            <FaAngleRight className='icon' onClick={() => navigate(-1)} />
+          </div>
+          <div className="flexitemh3">
+            <h3 className='salayty'>سجل الدخول و احصل علي كل الصلاحيات</h3>
+          </div>
         </div>
         <img src={logo} alt="" className="logo-login" />
         <h2 className="title-login">تسجيل دخول</h2>
@@ -76,7 +92,6 @@ const Login = () => {
             />
             <Button type="submit">تسجيل</Button>
             <AuthFooter text="ليس لديك حساب؟" linkText="سجّل الآن" to="/register" />
-
           </form>
         </div>
       </Container>

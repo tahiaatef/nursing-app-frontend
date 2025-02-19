@@ -39,10 +39,11 @@ const Answer = styled.div`
   padding: 15px;
   font-size: 14px;
   color: #333;
-  max-height: ${({ isOpen }) => (isOpen ? "200px" : "0")};
+  max-height: ${({ $isOpen }) => ($isOpen ? "200px" : "0")};
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 `;
+
 
 const FAQs = [
   {
@@ -88,7 +89,8 @@ const FAQ = () => {
             <Question onClick={() => toggleFAQ(index)}>
               {faq.question} <span>{openIndex === index ? "−" : "+"}</span>
             </Question>
-            <Answer isOpen={openIndex === index}>{faq.answer}</Answer>
+            {/* <Answer isOpen={openIndex === index}>{faq.answer}</Answer> */}
+            <Answer $isOpen={openIndex === index}>{faq.answer}</Answer>
           </FAQItem>
         ))}
       </FAQContainer>
