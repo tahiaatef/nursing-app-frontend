@@ -3,39 +3,16 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
-  text-align: center;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-`;
 
 const RequestsList = () => {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [price, setPrice] = useState("");
   const [message, setMessage] = useState("");
+  const [expanded, setExpanded] = useState({});
+
+
+
 
   // ✅ تحميل البيانات مع التحقق من الطلبات المحفوظة في localStorage
   useEffect(() => {
@@ -74,6 +51,8 @@ const RequestsList = () => {
       return;
     }
 
+    
+
     axios
       .post(
         "http://localhost:5000/api/acceptRequests",
@@ -101,83 +80,45 @@ const RequestsList = () => {
       .catch((error) => console.error("Error accepting request:", error));
   };
 
+  const toggleExpand = (id) => {
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   return (
-    // <Container>
-    //   {requests.length > 0 ? (
-    //     requests.map((req, index) => (
-    //       <RequestCard key={req.id || req._id || index}>
-    //         {req.img && <Image src={req.img} alt="Request Image" />}
-    //         <Details>
-    //           <Dev1>
-    //             <Item status={req.status}>{req.status}</Item>
-    //             <Item2>{req.approved ? "Approved" : "Pending"}</Item2>
-    //           </Dev1>
-    //           <Title>{req.title || "No Title"}</Title>
-    //           <Description>{req.description || "No Description"}</Description>
-    //           {req.price && <Price>السعر: ${req.price}</Price>}
-    //         </Details>
-    //         {/* <Button $accepted={req.accepted} $disabled={req.accepted}>
-    //           {req.accepted ? "Accepted" : "Accept"}
-    //         </Button> */}
-    //         <Button
-    //             onClick={() => handleAcceptClick(req)}
-    //             $disabled={req.status !== "open" || req.accepted}
-    //             $accepted={req.accepted}
-    //           >
-    //             {req.status === "open" ? (req.accepted ? "Accepted" : "Accept") : "Unavailable"}
-    //           </Button>
-    //       </RequestCard>
-    //     ))
-    //   ) : (
-    //     <p>لا يوجد طلبات متاحه </p>
-    //   )}
-    //     {/* Modal for entering price & message */}
-    //     {selectedRequest && (
-    //       <ModalOverlay>
-    //         <ModalContent>
-    //           <h2>أدخل التفاصيل</h2>
-    //           <Input
-    //             type="number"
-    //             placeholder="السعر"
-    //             value={price}
-    //             onChange={(e) => setPrice(e.target.value)}
-    //           />
-    //           <Input
-    //             type="text"
-    //             placeholder="الرسالة"
-    //             value={message}
-    //             onChange={(e) => setMessage(e.target.value)}
-    //           />
-    //           <div style={{ marginTop: "10px" }}>
-    //             <Button onClick={() => setSelectedRequest(null)}>إلغاء</Button>
-    //             <Button onClick={submitAcceptRequest} style={{ marginLeft: "10px" }}>
-    //               إرسال
-    //             </Button>
-    //           </div>
-    //         </ModalContent>
-    //       </ModalOverlay>
-    //     )}
-    // </Container>
     <Container>
       {requests.length > 0 ? (
         <GridContainer>
           {requests.map((req, index) => (
             <RequestCard key={req.id || req._id || index}>
-              {req.img && <Image src={req.img} alt="Request Image" />}
+              <Item2 $approved={req.approved}>{req.approved ? "تم الموافقه" : "انتظار"}</Item2>
               <Details>
-                <Title>{req.title || "No Title"}</Title>
-                <Description>{req.description || "No Description"}</Description>
-                <Price>السعر: {req.price ? `$${req.price}` : "غير محدد"}</Price>
-                <StatusContainer>
-                  <Item  $status={req.status}>{req.status}</Item>
-                  <Item2>{req.approved ? "Approved" : "Pending"}</Item2>
-                </StatusContainer>
+                <Title> العنوان : {req.title || "No Title"}</Title>
+                <Description>
+                  <strong>وصف الطلب :</strong>  
+                  {expanded[req._id] || (req.description || "").length <= 50
+                    ? req.description || "No Description"
+                    : `${req.description.substring(0, 50)}... `}
+  
+                    {(req.description || "").length > 50 && (
+                <span 
+                    onClick={() => toggleExpand(req._id)} 
+                      style={{ color: "var(--primary-color)", cursor: "pointer", fontWeight: "bold" }}
+                >
+                {expanded[req._id] ? "عرض أقل" : "عرض المزيد"}
+                </span>
+                )}
+                </Description>
+                <Price>رقم الهاتف : {req.price ? `${req.price}` : " لم يتم ارساله"}</Price>
+                <Item $status={req.status === "open" ? "مفتوح" : req.status === "في حاله التنفيذ" ? "في حاله التنفيذ" : "مغلق"}>
+                    حاله الطلب : { req.status === "open" ? "مفتوح" : req.status === "في حاله التنفيذ" ? "في حاله التنفيذ" : "مغلق"}
+                </Item>
+                <br/>
                 <Button
                         onClick={() => handleAcceptClick(req)}
                         disabled={req.status !== "open" || req.accepted}
                         $accepted={req.accepted}
                         >
-                    {req.status === "open" ? (req.accepted ? "Accepted" : "Accept") : "Unavailable"}
+                    {req.status === "open" ? (req.accepted ? "تم اضافه العرض " : "اضافه عرض ") : "غير متاح "}
                 </Button>
               </Details>
             </RequestCard>
@@ -203,10 +144,10 @@ const RequestsList = () => {
               onChange={(e) => setMessage(e.target.value)}
             />
             <div style={{ marginTop: "10px" }}>
-              <Button onClick={() => setSelectedRequest(null)}>إلغاء</Button>
-              <Button onClick={submitAcceptRequest} style={{ marginLeft: "10px" }}>
+              <Putton Putton onClick={() => setSelectedRequest(null)}>إلغاء</Putton>
+              <Putton onClick={submitAcceptRequest} style={{ marginRight: "30px" }}>
                 إرسال
-              </Button>
+              </Putton>
             </div>
           </ModalContent>
         </ModalOverlay>
@@ -219,45 +160,29 @@ export default RequestsList;
 
 
 
-const Image = styled.img`
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-`;
-
 const Details = styled.div`
   flex: 1;
   padding-left: 15px;
 `;
 
 const Title = styled.h3`
-  margin: 0;
-  font-size: 18px;
-  color: #333;
-`;
-
-const Description = styled.p`
   margin: 5px 0;
-  color: #666;
+  font-size: 16px;
+  color: #333;
 `;
 
 const Price = styled.p`
   font-weight: bold;
-  color: green;
+  color: rgb(137, 135, 135) ;
+  margin: 5px 0;
 `;
-
-
-
 
 const Container = styled.div`
   max-width: 1200px;
   padding: 20px;
-  font-family: Arial, sans-serif;
-  // background-color:red;
   margin-top:-200px;
-  margin-right:100px
+  margin-right:100px;
+  
 `;
 
 const GridContainer = styled.div`
@@ -266,72 +191,99 @@ const GridContainer = styled.div`
   gap: 20px;
 `;
 
+const Item = styled.p`
+  color: ${(props) =>
+    props.$status === "مفتوح" ? "blue" :
+    props.$status === "في حاله التنفيذ" ? "orange" : "red"};
+  font-weight: bold;
+  margin: 5px 0;
+`;
+
+const Item2 = styled.div`
+  color: ${(props) => (props.$approved ? "green" : "#D3D3D3")};
+  font-weight: bold;
+`;
+
 const RequestCard = styled.div`
   background: white;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px; /* ارتفاع مناسب */
+  justify-content: space-between;
 
   &:hover {
     transform: scale(1.05);
   }
 `;
 
-const StatusContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
+const Description = styled.p`
+  margin: 5px 0;
+  color: #666;
+  line-height: 1.4;
+  text-align: justify;
 `;
-
-// const Item = styled.div`
-//   background-color: ${(props) =>
-//     props.status === "open" ? "blue" : props.status === "in_progress" ? "orange" : "red"};
-//   color: white;
-//   padding: 8px;
-//   border-radius: 5px;
-//   font-size: 12px;
-//   font-weight: bold;
-// `;
-const Item = styled.div`
-  background-color: ${(props) =>
-    props.$status === "open" ? "blue" :
-    props.$status === "in_progress" ? "orange" : "red"};
-  color: white;
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: bold;
-`;
-
-
-const Item2 = styled.div`
-  color: green;
-  font-weight: bold;
-`;
-
-// const Button = styled.button`
-//   background: ${(props) => (props.accepted ? "green" : "#007BFF")};
-//   color: white;
-//   padding: 10px;
-//   border-radius: 5px;
-//   cursor: pointer;
-//   transition: background 0.3s;
-
-//   &:hover {
-//     background: ${(props) => (props.accepted ? "darkgreen" : "#0056b3")};
-//   }
-// `;
 
 const Button = styled.button`
   background: ${(props) => (props.$accepted ? "green" : "#007BFF")};
   color: white;
   padding: 10px;
   border-radius: 5px;
+  border: none;
   cursor: pointer;
+  width: 90%;
+  // margin-top: 10px;
   transition: background 0.3s;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
 
   &:hover {
     background: ${(props) => (props.$accepted ? "darkgreen" : "#0056b3")};
   }
+`;
+
+const Putton = styled.button`
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background : var(--primary-color);
+  width:20%
+
+`
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;

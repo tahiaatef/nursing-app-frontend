@@ -85,7 +85,29 @@ const Login = () => {
       // استخدام `?.` لتجنب تخزين `undefined`
       localStorage.setItem("user_id", decoded?.id || "");
       localStorage.setItem("nurse_id", decoded?.is_nurse ? decoded.id : ""); 
-  
+      const userId = decoded?.id; 
+
+      axios.get(`http://localhost:5000/api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log("🔍 API Response:", res.data); // تحقق مما إذا كانت البيانات صحيحة
+    
+        if (res.data?.first_name && res.data?.last_name) {
+          const fullName = `${res.data.first_name}`.trim();
+          
+          localStorage.setItem("username", fullName);
+          console.log("✅ تم تخزين الاسم في Local Storage:", fullName);
+        } else {
+          console.warn("⚠️ لم يتم العثور على first_name و last_name في الاستجابة!");
+        }
+      })
+      .catch((err) => {
+        console.error("❌ خطأ أثناء جلب بيانات المستخدم:", err);
+        setMessage("حدث خطأ أثناء جلب بيانات المستخدم");
+      });
+
+
       // التوجيه بناءً على دور المستخدم
       if (decoded?.is_nurse) {
         navigate("/nurse-dashboard");
@@ -119,7 +141,7 @@ const Login = () => {
             <Input 
               type="email" 
               name="email" 
-              placeholder="Email" 
+              placeholder="ادخل الايميل" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
@@ -127,7 +149,7 @@ const Login = () => {
             <Input 
               type="password" 
               name="password" 
-              placeholder="Password" 
+              placeholder="الباسورد" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               required 

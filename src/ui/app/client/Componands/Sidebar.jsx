@@ -10,15 +10,16 @@ const SidebarContainer = styled.div`
   right: 0;
   top: 0;
   height: 100vh;
-  background: linear-gradient(135deg,var(--primary-color),rgb(86, 130, 205));
+  background: linear-gradient(135deg, #3b5998, #6d9df2);
   color: white;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
-  margin-top:90px;
-  
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
 `;
+
+
 
 const MenuList = styled.ul`
   list-style: none;
@@ -26,6 +27,7 @@ const MenuList = styled.ul`
   margin: 0;
   flex-grow: 1;
 `;
+
 
 const MenuItem = styled.li`
   margin: 10px 0;
@@ -66,6 +68,7 @@ const Sidebar = () => {
 
   return (
     <SidebarContainer>
+      <div  style={{height:"90px"}}></div>
       <MenuList>
         {menuItems.map(({ text, path, icon }) => (
           <MenuItem key={text}>

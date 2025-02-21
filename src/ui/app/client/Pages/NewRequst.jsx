@@ -13,7 +13,9 @@ const Container = styled.div`
 `;
 
 const FormWrapper = styled.div`
-  background: white;
+   background:#6d9df2 ;
+  // background: linear-gradient(135deg, #3b5998, #6d9df2);
+
   margin-right : 200px;
   padding: 30px;
   border-radius: 10px;
@@ -22,7 +24,7 @@ const FormWrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  color: #2395f8;
+  color:rgb(255, 255, 255);
   text-align: center;
   margin-bottom: 20px;
 `;
@@ -45,15 +47,17 @@ const TextArea = styled.textarea`
 `;
 
 const Button = styled.button`
-  width: 100%;
+  width: 20%;
   padding: 10px;
-  background-color: #2395f8;
+  background-color: var(--color-dark);
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 16px;
+  font-weight:bold;
   cursor: pointer;
   transition: 0.3s;
+  margin-right:40%;
 
   &:hover {
     background-color: #1a7ac4;
@@ -112,30 +116,67 @@ export default function NewRequest() {
         <Title>طلب جديد</Title>
         
         <form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            name="title"
-            placeholder=" يرجي كتابه عنوان حضرتك بالتفاصيل "
-            value={requestData.title}
-            onChange={handleChange}
-          />
+          <label htmlFor="title" style={{ fontWeight: "bold", marginBottom: "5px" ,color:"white"}}>العنوان</label>
+  <Input
+    id="title"
+    type="text"
+    name="title"
+    placeholder="يرجى كتابة العنوان بالتفصيل"
+    value={requestData.title}
+    onChange={handleChange}
+    style={{
+      padding: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+      fontSize: "1rem",
+      outline: "none",
+      transition: "border-color 0.3s ease-in-out",
+    }}
+    onFocus={(e) => (e.target.style.borderColor = "#007bff")}
+    onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+  />
           {errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
 
+          <label htmlFor="tel" style={{ fontWeight: "bold", marginBottom: "5px" ,color:"white"}}>رقم الهاتف  </label>
           <Input
+            id="tel"
             type="tel"
             name="price"
-            placeholder="رقم الهاتف"
+            placeholder=" يرجي ادخال رقم الهاتف"
             value={requestData.price}
             onChange={handleChange}
+            style={{
+              padding: "10px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              fontSize: "1rem",
+              outline: "none",
+              transition: "border-color 0.3s ease-in-out",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#007bff")}
+            onBlur={(e) => (e.target.style.borderColor = "#ccc")}
           />
           {errors.price && <ErrorMsg>{errors.price}</ErrorMsg>}
 
+
+          <label htmlFor="description" style={{ fontWeight: "bold", marginBottom: "5px" ,color:"white"}}>وصف الطلب    </label>
           <TextArea
             name="description"
+            id="description"
             placeholder="يرجي كتابه حاله المريض وما تحتاجه بوضوح "
             rows="4"
             value={requestData.description}
             onChange={handleChange}
+            style={{
+              padding: "10px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              fontSize: "1rem",
+              outline: "none",
+              transition: "border-color 0.3s ease-in-out",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#007bff")}
+            onBlur={(e) => (e.target.style.borderColor = "#ccc")}
           />
           {errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
 

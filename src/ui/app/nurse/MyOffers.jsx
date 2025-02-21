@@ -12,13 +12,15 @@ const MainContent = styled.main`
   margin-right:450px;
   margin-top:150px;
 `
-//////////////////////////////////////////////////////////////////////////////////////////
 
 
 const Container = styled.div`
     width: 50%;
     text-align: center;
-    color : var(--primary-color)
+    margin-right : 150px;
+    
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 `;
 
 const RequestCard = styled.div`
@@ -150,6 +152,7 @@ const MyOffers = () => {
     const submitAcceptRequest = async () => {
         try {
             const offerId = selectedRequest._id;
+            console.log("🚀 إرسال التعديل:", { offerId, price, message });
             const response = await axios.put(`http://localhost:5000/api/acceptRequests/${offerId}/accept`,
                 { price, message }
             );
@@ -160,8 +163,9 @@ const MyOffers = () => {
                     offer._id === offerId ? { ...offer, price, message } : offer
                 )
             );
-
+            
             setSelectedRequest(null); // إخفاء ال overlay
+            fetchOffers();
             console.log("Offer updated successfully");
             setError(null);
         } catch (error) {
@@ -179,7 +183,7 @@ const MyOffers = () => {
       <Slider/>
       <MainContent>
       <Container>
-            <h2>عروضي</h2>
+            <h2 style={{color: "var(--primary-color)"}}>عروضي</h2>
             <br />
             {offers.length === 0 ? (
                 <Pp>لم تقدم علي عرض بعد</Pp>
@@ -195,7 +199,7 @@ const MyOffers = () => {
                         </p>
                         <ButtonGroup>
                             <EditButton onClick={() => handleEdit(offer)}>
-                                ✏️ تعديل
+                                  تعديل
                             </EditButton>
                             <DeleteButton onClick={() => handleDelete(offer._id)}>
                                 ️ حذف
@@ -223,7 +227,7 @@ const MyOffers = () => {
                         />
                         <div style={{ marginTop: "10px" }}>
                             <Button onClick={() => setSelectedRequest(null)}>إلغاء</Button>
-                            <Button onClick={submitAcceptRequest} style={{ marginLeft: "10px" }}>
+                            <Button onClick={submitAcceptRequest} style={{ marginRight: "10px" }}>
                                 إرسال
                             </Button>
                         </div>
@@ -238,3 +242,6 @@ const MyOffers = () => {
 };
 
 export default MyOffers;
+
+
+

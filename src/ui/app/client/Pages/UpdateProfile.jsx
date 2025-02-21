@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   max-width: 700px;
-  margin: 160px auto;
+  margin:auto;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -17,6 +17,7 @@ const Back = styled.div`
   top: 0px;
   right: 250px;
   background-color: #f8f9fa;
+  min-height:100vh;
 `;
 const Input = styled.input`
   width: 100%;
@@ -111,6 +112,7 @@ const UpdateProfile = () => {
 
   return (
     <Back>
+      <div style={{height:"120px"}}></div>
     <Container>
       <H2>تحديث الملف الشخصي</H2>
       {message && <Message>{message}</Message>}

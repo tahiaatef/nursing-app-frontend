@@ -51,42 +51,22 @@ const MyRequests = () => {
 
   return (
     <Back>
-    {/* <Container>
-      <br/><br/>
-      <H2>طلباتي</H2>
-      {requests.length === 0 ? (
-        <p>لا توجد طلبات متاحة.</p>
-      ) : (
-        requests.map(request => (
-          <RequestCard key={request._id}>
-            <h4> العنوان : {request.title}</h4>
-            <p><strong>الوصف:</strong> {request.description}</p>
-            <p><strong>رقم الموبيل :</strong> {request.price} </p>
-            <p><strong>الحالة:</strong> {request.status}</p>
-            <ButtonGroup>
-              <EditButton onClick={() => handleEdit(request._id)}>✏️ تعديل</EditButton>
-              <DeleteButton onClick={() => handleDelete(request._id)}>🗑️ حذف</DeleteButton>
-              <OfferButton onClick={() => handleViewOffers(request._id)}>🎉 العروض</OfferButton>
-            </ButtonGroup>
-          </RequestCard>
-        ))
-      )}
-    </Container> */}
-     <Container>
+    <Container>
+        {/* <div style={{height:"100px"}}></div> */}
         <H2>طلباتي</H2>
         {requests.length === 0 ? (
           <NoRequests>لا توجد طلبات متاحة.</NoRequests>
         ) : (
           requests.map(request => (
             <RequestCard key={request._id}>
-              <h4>📌 العنوان:    {request.title}</h4><br/>
-              <p><strong>📖 الوصف:   </strong> {request.description}</p><br/>
-              <p><strong>📞 رقم الموبايل:   </strong> {request.price} </p><br/>
-              <p><strong>🔄 الحالة:   </strong> {request.status}</p><br/>
+              <Divm><Headp> العنوان :</Headp>  {request.title}</Divm>
+              <Divm><Headp>الوصف :</Headp> {request.description}</Divm>
+              <Divm><Headp> رقم الموبايل :</Headp> {request.price} </Divm>
+              <Divm><Headp> الحالة :</Headp> {request.status}</Divm>
               <ButtonGroup>
-                <EditButton onClick={() => handleEdit(request._id)}>✏️ تعديل</EditButton>
-                <DeleteButton onClick={() => handleDelete(request._id)}>🗑️ حذف</DeleteButton>
-                <OfferButton onClick={() => handleViewOffers(request._id)}>🎉 العروض</OfferButton>
+                <OfferButton onClick={() => handleViewOffers(request._id)}> العروض</OfferButton>
+                <EditButton onClick={() => handleEdit(request._id)}>تعديل</EditButton>
+                <DeleteButton onClick={() => handleDelete(request._id)}> حذف</DeleteButton>
               </ButtonGroup>
             </RequestCard>
           ))
@@ -97,36 +77,29 @@ const MyRequests = () => {
 };
 
 export default MyRequests;
+
 const Back = styled.div`
-  // position: absolute;
-  // left: 0px;
-  // top: 0px;
-  // height: 100vh;
-  // right: 250px;
-  // background-color: #f8f9fa;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f4f6f9;
   margin-right:250px;
   
 `;
 
 const Container = styled.div`
-  width: 80%;
-  max-width: 1000px;
-  margin-top:200px;
-  // background:  #f9f9f9;
-  padding: 20px;
-  // border-radius: 10px;
-  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 200px;
+  margin-top: -50px;
+  
+  
 `;
 
 const H2 = styled.h2`
   text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 20px;
+  color: rgb(36, 53, 89);
+  margin-bottom: 30px;
 `;
 
 const NoRequests = styled.p`
@@ -135,23 +108,57 @@ const NoRequests = styled.p`
   font-size: 18px;
 `;
 
+// const RequestCard = styled.div`
+//   // background:#ffffff;
+//   background: linear-gradient(90deg, #1E3A8A, #007bff),
+//   padding: 15px;
+//   margin: 15px 0;
+//   border-radius: 8px;
+//   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+//   text-align: center;
+//   color:white;
+//   transition: all 0.3s ease-in-out;
+
+//   &:hover {
+//     transform: scale(1.02);
+//   }
+// `;
+
 const RequestCard = styled.div`
-  background:#ffffff;
+  // background: linear-gradient(135deg, #6d9df2, #3b5998);
+  // background:#3b5998;
+  background:#6d9df2 ;
   padding: 15px;
-  margin: 15px 0;
+  margin:30px 0;
   border-radius: 8px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  text-align: right;
-  transition: all 0.3s ease-in-out;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.15); 
+  text-align: center;
+  color: white;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.05); /* تكبير خفيف لجذب الانتباه */
+    box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التحويم */
   }
 `;
 
+const  Divm  = styled.div`
+  background: rgba(250, 249, 249, 0.2);
+  border-radius: 8px;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.15); 
+  padding:15px;
+    font-weight:bold;
+
+`
+const Headp = styled.p`
+  text-align:right;
+  font-size:18px;
+  // font-weight:bold;
+
+`
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content:center;
   margin-top: 15px;
 `;
 
@@ -165,25 +172,29 @@ const Button = styled.button`
 `;
 
 const EditButton = styled(Button)`
-  background: #3498db;
+  background:var(--color-dark);
   color: #fff;
   &:hover {
-    background: #2980b9;
+    background: rgb(51, 87, 179);
   }
+  margin-left:40px; 
+  margin-right:40px; 
 `;
 
 const DeleteButton = styled(Button)`
-  background: #e74c3c;
+  background:rgb(157, 45, 33);
   color: #fff;
   &:hover {
     background: #c0392b;
   }
+
 `;
 
 const OfferButton = styled(Button)`
-  background: #2ecc71;
+  background:rgb(18, 84, 46);
   color: #fff;
   &:hover {
     background: #27ae60;
   }
+    
 `;

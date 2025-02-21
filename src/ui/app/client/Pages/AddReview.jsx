@@ -2,13 +2,13 @@
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
-import { useParams, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 
 const AddReview = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const { offerId } = useParams();
+  // const { offerId } = useParams();
   const location = useLocation();
   const { requestId, nurseId } = location.state || {};
 
@@ -54,7 +54,7 @@ const AddReview = () => {
   return (
     <Back>
       <div style={styles.container}>
-        <h3>إضافة مراجعة للعرض رقم: {offerId}</h3>
+        <h3>إضافة مراجعة</h3>
         <div style={styles.starsContainer}>
           {[1, 2, 3, 4, 5].map((star) => (
             <span

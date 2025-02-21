@@ -8,9 +8,15 @@ const OffersPage = () => {
   const { requestId } = useParams();
   const [offers, setOffers] = useState([]);
   const [message, setMessage] = useState(""); // إضافة حالة لعرض الرسالة
-  // const [patientId, setPatientId] = useState(""); // تعريف patientId هنا
   const [nurseId, setNurseId] = useState(""); // تعريف nurseId هنا
-
+  // const [appliedOffers, setAppliedOffers] = useState({});
+  // const [reviewedOffers, setReviewedOffers] = useState({});
+  const [appliedOffers, setAppliedOffers] = useState(() => {
+    return JSON.parse(localStorage.getItem("appliedOffers")) || {};
+  });
+  const [reviewedOffers, setReviewedOffers] = useState(() => {
+    return JSON.parse(localStorage.getItem("reviewedOffers")) || {};
+  });
   // console.log("patientId:", patientId);
   console.log("nurseId:", nurseId);
   console.log("requestId:", requestId);
@@ -64,8 +70,15 @@ const OffersPage = () => {
   const handleApply = async (offerId) => {
     try {
       await axios.put(`http://localhost:5000/api/acceptRequests/${offerId}/accept`);
+      setAppliedOffers((prev) => {
+        const updated = { ...prev, [offerId]: true };
+        localStorage.setItem("appliedOffers", JSON.stringify(updated));
+        return updated;
+      });
+  
       setMessage("تم تعجيل الطلب بنجاح!"); // تغيير الرسالة عند تطبيق العرض
-
+      // setAppliedOffers((prev) => ({ ...prev, [offerId]: true }));
+      
       // إخفاء الرسالة بعد 3 ثواني
       setTimeout(() => setMessage(""), 3000);
     } catch (error) {
@@ -80,13 +93,15 @@ const OffersPage = () => {
 
   const navigate = useNavigate(); // استخدام useNavigate للحصول على دالة التنقل
 
-  const handleNavigation = () => {
-    // const requestId = "request123";  
-    // const nurseId = "nurse456";      
-
-    // التنقل إلى الصفحة مع تمرير state
+  const handleNavigation = (offerId) => {
     navigate('/SharedLayout/add-review/${offer._id}', {
       state: { requestId, nurseId },  // تمرير الـ state هنا
+    });
+    // setReviewedOffers((prev) => ({ ...prev, [offerId]: true }));
+    setReviewedOffers((prev) => {
+      const updated = { ...prev, [offerId]: true };
+      localStorage.setItem("reviewedOffers", JSON.stringify(updated));
+      return updated;
     });
   };
   return (
@@ -100,11 +115,20 @@ const OffersPage = () => {
         ) : (
           offers.map(offer => (
             <OfferCard key={offer._id}>
-              <h3>{offer.nurse.first_name} {offer.nurse.last_name}</h3>
-              <p><strong>السعر:</strong> {offer.price ? offer.price : "غير متوفر"} جنيه</p>
-              <p><strong>الوصف:</strong> {offer.message ? offer.message : "لا يوجد وصف"}</p>
-              <ApplyButton onClick={() => handleApply(offer._id)}>✔️ تطبيق</ApplyButton>
-              <ReviewButton onClick={() => handleNavigation(offer._id)}>إضافة مراجعة 📝</ReviewButton>
+              <h3>{offer.nurse.first_name} {offer.nurse.last_name}</h3><br/>
+              <p><strong>السعر   </strong> {offer.price ? offer.price : "غير متوفر"} جنيه</p><br/>
+              <p><strong>الوصف   </strong> {offer.message ? offer.message :  " لا يوجد وصف"} </p><br/>
+              <ApplyButton  onClick={() => handleApply(offer._id)} disabled={appliedOffers[offer._id]} // تعطيل الزر بعد الضغط
+                >
+                  {appliedOffers[offer._id] ? "✔️ تم التطبيق" : "✔️ تطبيق"}
+                </ApplyButton>
+
+                <ReviewButton
+                      onClick={() => handleNavigation(offer._id)}
+                      disabled={reviewedOffers[offer._id]} // تعطيل الزر بعد الضغط
+                >
+                    {reviewedOffers[offer._id] ? "✅ تمت إضافة المراجعة" : "📝 إضافة مراجعة"}
+                </ReviewButton>
             </OfferCard>
           ))
         )}
@@ -178,7 +202,7 @@ const ReviewButton = styled.button`
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 5px;
-  margin-left: 10px;
+  margin-right: 40px;
 `;
 
 

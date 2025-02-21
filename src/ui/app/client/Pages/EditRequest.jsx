@@ -29,7 +29,7 @@ const Form = styled.form`
 const Label = styled.label`
   font-weight: bold;
   text-align: right;
-  color:#000;
+
 `;
 
 const Input = styled.input`
@@ -59,9 +59,7 @@ const Button = styled.button`
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  margin-top: 20px;
-  width: 40%;
-  margin-left:10%
+  margin-top: 10px;
 `;
 
 const BackButton = styled.button`
@@ -71,8 +69,9 @@ const BackButton = styled.button`
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  margin-top: 20px;
-  width: 40%;
+  margin-top: 10px;
+  display: block;
+  width: 100%;
 `;
 
 const SuccessMessage = styled.p`
@@ -82,7 +81,6 @@ const SuccessMessage = styled.p`
   border-radius: 5px;
   border: 1px solid #c3e6cb;
   margin-bottom: 10px;
-  margin-top:20px;
 `;
 
 import { useState, useEffect } from "react";
@@ -140,7 +138,7 @@ const EditRequest = () => {
     <Container>
       <h2>تعديل الطلب</h2>
 
-      
+      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
 
       {/* عرض رسالة تحميل إذا لم يتم جلب البيانات بعد */}
       {!formData ? (
@@ -158,17 +156,15 @@ const EditRequest = () => {
 
           <Label>الحالة:</Label>
           <Select name="status" value={formData.status} onChange={handleChange}>
-            <option value="open">Open</option>
-            <option value="in_progress">In Progress</option>
-            <option value="closed">Closed</option>
+            <option value="مفتوح">مفتوح</option>
+            <option value="في حاله التنفيذ">في حاله التنفيذ</option>
+            <option value="مغلقه">مغلقه</option>
           </Select>
-
-          {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+          <Button type="submit">💾 حفظ التعديلات</Button>
         </Form>
       )}
-      <Button type="submit">💾 حفظ التعديلات</Button>
+
       <BackButton onClick={() => navigate("/SharedLayout/my-requests")}>🔙 الرجوع إلى الطلبات</BackButton>
-      
     </Container>
     </Back>
   );
