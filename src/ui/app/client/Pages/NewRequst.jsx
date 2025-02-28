@@ -7,15 +7,13 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height:100vh;
+  min-height:100vh;
   background-color: #f8f9fa;
   
 `;
 
 const FormWrapper = styled.div`
-   background:#6d9df2 ;
-  // background: linear-gradient(135deg, #3b5998, #6d9df2);
-
+  background:#6d9df2 ;
   margin-right : 200px;
   padding: 30px;
   border-radius: 10px;
@@ -65,8 +63,10 @@ const Button = styled.button`
 `;
 
 const ErrorMsg = styled.p`
-  color: red;
+  color: var(--color-dark);
   font-size: 14px;
+  margin-bottom:20px;
+  font-weight:bold;
 `;
 
 export default function NewRequest() {
@@ -81,9 +81,9 @@ export default function NewRequest() {
 
   const validateForm = () => {
     let newErrors = {};
-    if (!requestData.title.trim()) newErrors.title = "يجب إدخال عنوان الطلب";
+    if (!requestData.title.trim()) newErrors.title = "يجب إدخال عنوان المريض ";
     if (!requestData.description.trim()) newErrors.description = "يجب إدخال وصف الطلب";
-    if (!requestData.price.trim() || isNaN(requestData.price)) newErrors.price = "يجب إدخال سعر صحيح";
+    if (!requestData.price.trim() || isNaN(requestData.price)) newErrors.price = "يجب إدخال رقم الهاتف صحيح";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -111,6 +111,8 @@ export default function NewRequest() {
   };
 
   return (
+    <>
+    <div style={{height:"70px"}}></div>
     <Container>
       <FormWrapper>
         <Title>طلب جديد</Title>
@@ -187,6 +189,7 @@ export default function NewRequest() {
         </form>
       </FormWrapper>
     </Container>
+    </>
   );
 }
 
@@ -194,5 +197,5 @@ export default function NewRequest() {
 const P1 = styled.p`
   text-align : center ;
   margin-top : 10px;
-  color:var(--primary-color);
+  color: white;
 `

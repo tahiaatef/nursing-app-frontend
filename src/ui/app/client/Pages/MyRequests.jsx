@@ -52,10 +52,9 @@ const MyRequests = () => {
   return (
     <Back>
     <Container>
-        {/* <div style={{height:"100px"}}></div> */}
         <H2>طلباتي</H2>
         {requests.length === 0 ? (
-          <NoRequests>لا توجد طلبات متاحة.</NoRequests>
+          <NoOffersMessage>لا توجد طلبات متاحة.</NoOffersMessage>
         ) : (
           requests.map(request => (
             <RequestCard key={request._id}>
@@ -102,31 +101,15 @@ const H2 = styled.h2`
   margin-bottom: 30px;
 `;
 
-const NoRequests = styled.p`
-  text-align: center;
-  color: #7f8c8d;
-  font-size: 18px;
-`;
-
-// const RequestCard = styled.div`
-//   // background:#ffffff;
-//   background: linear-gradient(90deg, #1E3A8A, #007bff),
-//   padding: 15px;
-//   margin: 15px 0;
-//   border-radius: 8px;
-//   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+// const NoRequests = styled.p`
 //   text-align: center;
-//   color:white;
-//   transition: all 0.3s ease-in-out;
-
-//   &:hover {
-//     transform: scale(1.02);
-//   }
+//   color: #7f8c8d;
+//   font-size: 18px;
 // `;
 
+
+
 const RequestCard = styled.div`
-  // background: linear-gradient(135deg, #6d9df2, #3b5998);
-  // background:#3b5998;
   background:#6d9df2 ;
   padding: 15px;
   margin:30px 0;
@@ -197,4 +180,14 @@ const OfferButton = styled(Button)`
     background: #27ae60;
   }
     
+`;
+const NoOffersMessage = styled.p`
+  text-align: center;
+  font-size: 1.5rem;
+  color: #6b7280;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 600px;
 `;

@@ -49,7 +49,7 @@ const MenuLink = styled(NavLink)`
 
   &.active {
     background: rgba(255, 255, 255, 0.3);
-    font-weight: bold;
+    // font-weight: bold;
   }
 `;
 

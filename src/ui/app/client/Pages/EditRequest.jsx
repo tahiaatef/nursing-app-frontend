@@ -13,11 +13,11 @@ const Container = styled.div`
   margin-right: 130px;
   margin-left:80px;
   text-align: center;
-  background: #f9f9f9;
+  background: #6d9df2;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  color:var(--primary-color);
+  color:white;
 `;
 
 const Form = styled.form`
@@ -53,34 +53,37 @@ const Select = styled.select`
 `;
 
 const Button = styled.button`
-  background: #28a745;
+  background: rgb(18, 84, 46);
   color: #fff;
   border: none;
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
   margin-top: 10px;
+  
 `;
 
 const BackButton = styled.button`
-  background: #007bff;
+  background: var(--color-dark);
   color: #fff;
   border: none;
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
   margin-top: 10px;
-  display: block;
-  width: 100%;
+  margin-right:40px;
 `;
 
 const SuccessMessage = styled.p`
-  background: #d4edda;
+  background: white;
   color: #155724;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #c3e6cb;
   margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left:20px;
+  width:100%;
 `;
 
 import { useState, useEffect } from "react";
@@ -160,11 +163,12 @@ const EditRequest = () => {
             <option value="في حاله التنفيذ">في حاله التنفيذ</option>
             <option value="مغلقه">مغلقه</option>
           </Select>
-          <Button type="submit">💾 حفظ التعديلات</Button>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button type="submit"> حفظ التعديلات</Button>
+          <BackButton onClick={() => navigate("/SharedLayout/my-requests")}>الرجوع إلى الطلبات</BackButton>
+          </div>
         </Form>
       )}
-
-      <BackButton onClick={() => navigate("/SharedLayout/my-requests")}>🔙 الرجوع إلى الطلبات</BackButton>
     </Container>
     </Back>
   );

@@ -87,14 +87,13 @@ const RequestsList = () => {
   return (
     <Container>
       {requests.length > 0 ? (
-        <GridContainer>
-          {requests.map((req, index) => (
-            <RequestCard key={req.id || req._id || index}>
-              <Item2 $approved={req.approved}>{req.approved ? "تم الموافقه" : "انتظار"}</Item2>
-              <Details>
-                <Title> العنوان : {req.title || "No Title"}</Title>
-                <Description>
-                  <strong>وصف الطلب :</strong>  
+        <CardsContainer>
+        {requests.map((req, index) => (
+          <Card key={req.id || req._id || index}>
+            <IconWrapper $approved={req.approved}>{req.approved ? "تم الموافقه" : "انتظار"}</IconWrapper>
+            <CardTitle>العنوان : {req.title || "No Title"}</CardTitle>
+            <Price>رقم الهاتف : {req.price ? `${req.price}` : " لم يتم ارساله"}</Price>
+            <CardText> <strong>وصف الطلب :</strong>  
                   {expanded[req._id] || (req.description || "").length <= 50
                     ? req.description || "No Description"
                     : `${req.description.substring(0, 50)}... `}
@@ -107,25 +106,21 @@ const RequestsList = () => {
                 {expanded[req._id] ? "عرض أقل" : "عرض المزيد"}
                 </span>
                 )}
-                </Description>
-                <Price>رقم الهاتف : {req.price ? `${req.price}` : " لم يتم ارساله"}</Price>
-                <Item $status={req.status === "open" ? "مفتوح" : req.status === "في حاله التنفيذ" ? "في حاله التنفيذ" : "مغلق"}>
+            </CardText>
+            <Divp>
+            <Item $status={req.status === "open" ? "مفتوح" : req.status === "في حاله التنفيذ" ? "في حاله التنفيذ" : "مغلق"}>
                     حاله الطلب : { req.status === "open" ? "مفتوح" : req.status === "في حاله التنفيذ" ? "في حاله التنفيذ" : "مغلق"}
-                </Item>
-                <br/>
-                <Button
-                        onClick={() => handleAcceptClick(req)}
-                        disabled={req.status !== "open" || req.accepted}
-                        $accepted={req.accepted}
-                        >
-                    {req.status === "open" ? (req.accepted ? "تم اضافه العرض " : "اضافه عرض ") : "غير متاح "}
-                </Button>
-              </Details>
-            </RequestCard>
-          ))}
-        </GridContainer>
+            </Item>
+            <Button   onClick={() => handleAcceptClick(req)}
+                          disabled={req.status !== "open" || req.accepted}
+                          $accepted={req.accepted}
+                          >
+                      {req.status === "open" ? (req.accepted ? "تم اضافه العرض " : "اضافه عرض ") : "غير متاح "}</Button></Divp>
+          </Card>
+        ))}
+      </CardsContainer>
       ) : (
-        <p>لا يوجد طلبات متاحه </p>
+        <NoOffersMessage>لا يوجد طلبات متاحه </NoOffersMessage>
       )}
       {selectedRequest && (
         <ModalOverlay>
@@ -159,16 +154,15 @@ const RequestsList = () => {
 export default RequestsList;
 
 
-
-const Details = styled.div`
-  flex: 1;
-  padding-left: 15px;
-`;
-
-const Title = styled.h3`
-  margin: 5px 0;
-  font-size: 16px;
-  color: #333;
+const NoOffersMessage = styled.p`
+  text-align: center;
+  font-size: 1.5rem;
+  color: #6b7280;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 600px;
 `;
 
 const Price = styled.p`
@@ -185,68 +179,12 @@ const Container = styled.div`
   
 `;
 
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-`;
-
 const Item = styled.p`
   color: ${(props) =>
     props.$status === "مفتوح" ? "blue" :
     props.$status === "في حاله التنفيذ" ? "orange" : "red"};
   font-weight: bold;
-  margin: 5px 0;
-`;
-
-const Item2 = styled.div`
-  color: ${(props) => (props.$approved ? "green" : "#D3D3D3")};
-  font-weight: bold;
-`;
-
-const RequestCard = styled.div`
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  min-height: 250px; /* ارتفاع مناسب */
-  justify-content: space-between;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const Description = styled.p`
-  margin: 5px 0;
-  color: #666;
-  line-height: 1.4;
-  text-align: justify;
-`;
-
-const Button = styled.button`
-  background: ${(props) => (props.$accepted ? "green" : "#007BFF")};
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  width: 90%;
-  // margin-top: 10px;
-  transition: background 0.3s;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-
-
-  &:hover {
-    background: ${(props) => (props.$accepted ? "darkgreen" : "#0056b3")};
-  }
+  margin: 20px 0;
 `;
 
 const Putton = styled.button`
@@ -287,3 +225,75 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 5px;
 `;
+
+const CardsContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+`
+
+const Card = styled.div`
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom:60px;
+  position:relative;
+`
+
+const IconWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+  color: ${(props) => (props.$approved ? "green" : "#D3D3D3")};
+  background:white;
+  border-radius: 50%;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  font-weight:bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  margin-top:-85px;
+`
+
+const CardTitle = styled.h2`
+  font-size: 1.25rem;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+`
+
+const CardText = styled.p`
+  color: #6b7280;
+  margin-bottom: 6rem;
+  line-height: 1.5;
+`
+
+const Button = styled.button`
+  background: transparent;
+  border: 2px solid  ${(props) => (props.$accepted ? "green" : "#007BFF")};
+  color:  ${(props) => (props.$accepted ? "green" : "#007BFF")};
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background:  ${(props) => (props.$accepted ? "green" : "#007BFF")};
+    color: white;
+  }
+`
+
+const Divp = styled.div`
+  position:absolute;
+  bottom:15px;
+`
