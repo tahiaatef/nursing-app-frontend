@@ -51,12 +51,28 @@ const LinkItem = styled.li`
   }
 `;
 
+// const SocialIcons = styled.div`
+//   display: flex;
+//   gap: 15px;
+//   font-size: 1.5rem;
+//   margin-top: 30px;
+//   margin-right:300px;
+
+//   a {
+//     color: #b0b0b0;
+//     transition: color 0.3s ease;
+
+//     &:hover {
+//       color: white;
+//     }
+//   }
+// `;
 const SocialIcons = styled.div`
   display: flex;
   gap: 15px;
   font-size: 1.5rem;
   margin-top: 30px;
-  margin-right:300px;
+  justify-content: center; /* يجعل الأيقونات في المنتصف */
 
   a {
     color: #b0b0b0;
@@ -66,7 +82,13 @@ const SocialIcons = styled.div`
       color: white;
     }
   }
+
+  @media (max-width: 768px) {
+    gap: 10px; /* تقليل المسافات بين الأيقونات */
+    font-size: 1.2rem; /* تصغير حجم الأيقونات */
+  }
 `;
+
 
 const Copyright = styled.div`
   text-align: center;
