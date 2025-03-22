@@ -18,7 +18,9 @@
   direction: rtl;
   font-family: "Tajawal", sans-serif; /* أو "IBM Plex Arabic" حسب تفضيلك */
 }
-
+.color1{
+  color:#444
+}
 
 
 :root {
@@ -26,4 +28,5 @@
   --secondary-color: #515151;
   --on-primary: white;
   --color-dark:rgb(20, 50, 120);
+  --main-bg-color: #f9f9f9;
 }

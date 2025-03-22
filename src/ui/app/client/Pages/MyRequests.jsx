@@ -60,7 +60,7 @@ const MyRequests = () => {
             <RequestCard key={request._id}>
               <Divm><Headp> العنوان :</Headp>  {request.title}</Divm>
               <Divm><Headp>الوصف :</Headp> {request.description}</Divm>
-              <Divm><Headp> رقم الموبايل :</Headp> {request.price} </Divm>
+              <Divm><Headp> رقم الموبايل :</Headp> {request.phone} </Divm>
               <Divm><Headp> الحالة :</Headp> {request.status}</Divm>
               <ButtonGroup>
                 <OfferButton onClick={() => handleViewOffers(request._id)}> العروض</OfferButton>

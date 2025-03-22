@@ -73,7 +73,7 @@ export default function NewRequest() {
   const [requestData, setRequestData] = useState({
     title: "",
     description: "",
-    price: "",
+    phone: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -83,7 +83,7 @@ export default function NewRequest() {
     let newErrors = {};
     if (!requestData.title.trim()) newErrors.title = "يجب إدخال عنوان المريض ";
     if (!requestData.description.trim()) newErrors.description = "يجب إدخال وصف الطلب";
-    if (!requestData.price.trim() || isNaN(requestData.price)) newErrors.price = "يجب إدخال رقم الهاتف صحيح";
+    if (!requestData.phone.trim() || isNaN(requestData.phone)) newErrors.phone = "يجب إدخال رقم الهاتف صحيح";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -102,7 +102,7 @@ export default function NewRequest() {
       const userId = localStorage.getItem("user_id") || "معرف_افتراضي";
       await axios.post("http://localhost:5000/api/requests", { ...requestData, user_id: userId });
       setMessage("✅ تم إرسال الطلب بنجاح!");
-      setRequestData({ title: "", description: "", price: "" });
+      setRequestData({ title: "", description: "", phone: "" });
     } catch (error) {
       setMessage(`❌ :${error}ث خطأ أثناء الإرسالح`);
     } finally {
@@ -143,9 +143,9 @@ export default function NewRequest() {
           <Input
             id="tel"
             type="tel"
-            name="price"
+            name="phone"
             placeholder=" يرجي ادخال رقم الهاتف"
-            value={requestData.price}
+            value={requestData.phone}
             onChange={handleChange}
             style={{
               padding: "10px",
@@ -158,7 +158,7 @@ export default function NewRequest() {
             onFocus={(e) => (e.target.style.borderColor = "#007bff")}
             onBlur={(e) => (e.target.style.borderColor = "#ccc")}
           />
-          {errors.price && <ErrorMsg>{errors.price}</ErrorMsg>}
+          {errors.phone && <ErrorMsg>{errors.phone}</ErrorMsg>}
 
 
           <label htmlFor="description" style={{ fontWeight: "bold", marginBottom: "5px" ,color:"white"}}>وصف الطلب    </label>
